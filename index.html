@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cheat Alita SK</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>Cheat Alita SK</h1>
+
+    <form id="form">
+        <input type="text" id="word" placeholder="Masukan Awalan Kata">
+        <button type="submit">Cek</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function () {
+            $('#form').submit(function (event) {
+                event.preventDefault();
+                var data = $('#word').val();
+                $.get('https://raw.githubusercontent.com/hirzidevs/alita-sambung-kata/master/kbbi.json')
+                    .done(function (response) {
+                        $('#result').text(JSON.parse(response).filter(x => x.word.startsWith(data)).sort(
+                            (a, b) => b.word.length - a.word.length
+                        ).map(x => { return x.word }).join(' '));
+                    })
+                    .fail(function () {
+                        $('#result').text('Error');
+                    });
+            });
+        });
+    </script>
+</body>
+
+</html>
